@@ -30,7 +30,7 @@ with sync_playwright() as p:
                 page.fill('xpath=//*[@id="searchboxinput"]', f'{row[0]}')
                 time.sleep(1)
                 page.click('xpath=//*[@id="searchbox-searchbutton"]', timeout=0)
-                time.sleep(3)
+                time.sleep(5)
                 page.mouse.move(0,100)
                 while not page.is_visible('span.HlvSq'):
                     count = count + 1
@@ -48,9 +48,9 @@ with sync_playwright() as p:
                         page.mouse.wheel(0,500)
                         time.sleep(random.randint(1,2))
                     else:
-                        page.click('xpath=//*[@id="searchbox-searchbutton"]', timeout=0)
+                        page.click('xpath=//*[@id="searchbox-searchbutton"]', timeout=60)
                         count = 0
-                        time.sleep(3)
+                        time.sleep(5)
                         page.mouse.move(0,100)
                 count = 0
                 time.sleep(5)
