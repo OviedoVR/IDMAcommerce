@@ -32,7 +32,7 @@ with sync_playwright() as p:
                 page.click('xpath=//*[@id="searchbox-searchbutton"]', timeout=0)
                 time.sleep(3)
                 page.mouse.move(0,100)
-                while not page.is_visible('span.HlvSq'):
+                while page.query_selector('div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd[aria-label]') and not page.is_visible('span.HlvSq'):
                     count = count + 1
                     if count < 50:
                         page.mouse.wheel(0,500)
@@ -48,15 +48,21 @@ with sync_playwright() as p:
                         page.mouse.wheel(0,500)
                         time.sleep(random.randint(1,2))
                     else:
-                        page.click('xpath=//*[@id="searchbox-searchbutton"]', timeout=0)
+                        page.click('xpath=//*[@id="searchbox-searchbutton"]', timeout=60)
                         count = 0
-                        time.sleep(3)
+                        time.sleep(5)
                         page.mouse.move(0,100)
                 count = 0
-                time.sleep(5)
+                time.sleep(10)
                 html = page.inner_html('html')
                 soup = BeautifulSoup(html, 'html.parser')
-                results  = soup.find('div', class_='m6QErb DxyBCb kA9KIf dS8AEf ecceSd').find_all('div', class_='lI9IFe')
+                results  = soup.find('div', class_='m6QErb DxyBCb kA9KIf dS8AEf ecceSd')
+                
+                if results is None:
+                    page.close()
+
+                results = results.find_all('div', class_='lI9IFe')  
+                
                 for result in results:
                     try:
                         name = result.find('div', class_='qBF1Pd fontHeadlineSmall').text.strip()
